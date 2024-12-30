@@ -96,7 +96,7 @@ pipeline {
         }
         always {
             echo "Cleaning up workspace..."
-            cleanWs()
+              //cleanWs()
 
             // Archiver les artefacts de build pour les conserver
             archiveArtifacts artifacts: '**/build/**/*', allowEmptyArchive: true
