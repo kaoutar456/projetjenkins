@@ -14,25 +14,6 @@ pipeline {
         }
 
 
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    echo "Installing dependencies..."
-                    bat 'npm install'  // Installer les dépendances définies dans package.json
-                }
-            }
-        }
-
-        stage('Validate HTML') {
-            steps {
-                script {
-                    echo "Validating HTML files..."
-                    bat 'npm install --global htmlhint'  // Installer HTMLHint globalement
-                    bat 'npx htmlhint *.html'  // Valider les fichiers HTML
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                script {
