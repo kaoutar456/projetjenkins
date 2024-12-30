@@ -72,20 +72,20 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                script {
-                    echo "Deploying project..."
+               script {
+            echo "Deploying project..."
 
-                    bat """
-                    REM Préparer le répertoire de déploiement
-                    if not exist ${DEPLOY_DIR} mkdir ${DEPLOY_DIR}
+            bat """
+            REM Préparer le répertoire de déploiement
+            if not exist ${DEPLOY_DIR} mkdir ${DEPLOY_DIR}
 
-                    REM Copier les fichiers du répertoire de build vers le répertoire de déploiement
-                    echo Copying files to deployment directory...
-                    xcopy ${BUILD_DIR} ${DEPLOY_DIR} /E /H /C /I
+            REM Copier les fichiers du répertoire de build vers le répertoire de déploiement
+            echo Copying files to deployment directory...
+            xcopy ${BUILD_DIR} ${DEPLOY_DIR} /E /H /C /I /Y
 
-                    echo Deployment complete. Files are ready in '${DEPLOY_DIR}'.
-                    """
-                }
+            echo Deployment complete. Files are ready in '${DEPLOY_DIR}'.
+            """
+        }
             }
         }
     }
