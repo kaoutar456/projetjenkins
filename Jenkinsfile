@@ -20,8 +20,9 @@ pipeline {
                     echo "Building project..."
 
                     bat """
-                    REM Créer le répertoire 'build' s'il n'existe pas
-                    if not exist ${BUILD_DIR} mkdir ${BUILD_DIR}
+                    REM Créer les répertoires nécessaires dans 'build'
+                    if not exist ${BUILD_DIR}\\css mkdir ${BUILD_DIR}\\css
+                    if not exist ${BUILD_DIR}\\js mkdir ${BUILD_DIR}\\js
 
                     REM Minification et optimisation des fichiers CSS
                     echo Minifying CSS files...
@@ -51,8 +52,8 @@ pipeline {
                     bat """
                     REM Vérifier si les fichiers HTML, CSS et JS sont valides
                     echo Validating HTML files...
-                    if exist *.html (
-                        for %%i in (*.html) do echo Validating %%i...
+                    if exist ${BUILD_DIR}\\*.html (
+                        for %%i in (${BUILD_DIR}\\*.html) do echo Validating %%i...
                     )
 
                     echo Validating CSS files...
