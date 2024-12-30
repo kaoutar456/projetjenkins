@@ -27,25 +27,25 @@ pipeline {
                 script {
                     echo "Deploying project..."
                     bat '''
-                    mkdir "build"
-                    
-                    // Copier les fichiers HTML dans le répertoire 'build'
-                    copy *.html "build"
-                    
-                    // Copier les fichiers CSS depuis le dossier 'css' vers 'build'
-                    copy css\\*.css "build\\css"
-                    
-                    // Copier les fichiers JS depuis le dossier 'js' vers 'build'
-                    copy js\\*.js "build\\js"
-                    
-                    // Copier les fichiers images depuis le dossier 'img' vers 'build'
-                    copy img\\*.* "build\\img"
-                    
-                    // Copier les fichiers de fonts depuis le dossier 'fonts' vers 'build'
-                    copy fonts\\*.* "build\\fonts"
-                    
-                    // Copier les fichiers depuis le dossier 'slick' vers 'build'
-                    copy slick\\*.* "build\\slick"
+                  mkdir "build"
+
+REM Copier les fichiers HTML dans le répertoire 'build'
+copy *.html "build"
+
+REM Copier les fichiers CSS depuis le dossier 'css' vers 'build'
+copy css\\*.css "build\\css"
+
+REM Copier les fichiers JS depuis le dossier 'js' vers 'build'
+copy js\\*.js "build\\js"
+
+REM Copier les fichiers images depuis le dossier 'img' vers 'build'
+copy img\\*.* "build\\img"
+
+REM Copier les fichiers de fonts depuis le dossier 'fonts' vers 'build'
+copy fonts\\*.* "build\\fonts"
+
+REM Copier les fichiers depuis le dossier 'slick' vers 'build'
+copy slick\\*.* "build\\slick"
                     '''
                 }
             }
