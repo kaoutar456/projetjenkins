@@ -1,61 +1,52 @@
 pipeline {
-    agent any  // Utilisation d'un agent générique pour exécuter le pipeline
-
-    environment {
-        BUILD_DIR = "build"  // Répertoire où les fichiers seront construits ou copiés
-    }
+    agent any  // Utiliser n'importe quel agent
 
     stages {
         stage('Checkout') {
             steps {
-                // Clone le repository Git pour récupérer le code source
-                checkout scm
+                // Récupérer le code source
+                git 'https://github.com/kaoutar456/projetjenkins.git'
             }
         }
 
         stage('Build') {
             steps {
-                script {
-                    // Vous pouvez ajouter des étapes spécifiques si vous avez des outils de build à exécuter
-                    echo "Building project..."
-                }
+                // Étapes de construction (ajoutez ce qui est nécessaire pour votre projet)
+                echo 'Building the project...'
+                // Par exemple, vous pourriez lancer une commande pour construire votre projet
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Étapes de tests (si nécessaire)
+                echo 'Running tests...'
+                // Commands to run tests would go here
             }
         }
 
         stage('Deploy') {
             steps {
-                script {
-                    echo "Deploying project..."
-                    bat '''
-                  mkdir "build"
+                // Étapes de déploiement (ajoutez ce qui est nécessaire pour votre projet)
+                echo 'Deploying the project...'
+                // Example: you could copy files to a web server directory
+            }
+        }
 
-REM Copier les fichiers HTML dans le répertoire 'build'
-copy *.html "build"
-
-REM Copier les fichiers CSS depuis le dossier 'css' vers 'build'
-copy css\\*.css "build\\css"
-
-REM Copier les fichiers JS depuis le dossier 'js' vers 'build'
-copy js\\*.js "build\\js"
-
-REM Copier les fichiers images depuis le dossier 'img' vers 'build'
-copy img\\*.* "build\\img"
-
-REM Copier les fichiers de fonts depuis le dossier 'fonts' vers 'build'
-copy fonts\\*.* "build\\fonts"
-
-REM Copier les fichiers depuis le dossier 'slick' vers 'build'
-copy slick\\*.* "build\\slick"
-                    '''
-                }
+        stage('Cleanup') {
+            steps {
+                echo 'Cleaning up...'
+                // Clean up steps if necessary
             }
         }
     }
 
     post {
-        always {
-            // Nettoyer l'espace de travail après chaque build
-            cleanWs()
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
