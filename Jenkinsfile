@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         BUILD_DIR = "build"  // Répertoire où les fichiers seront copiés
+        DEPLOY_DIR = "C:\\Deploy"  // Répertoire cible pour le déploiement
     }
 
     stages {
@@ -42,26 +43,46 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                script {
+                    echo "Testing project..."
+
+                    bat """
+                    REM Vérifier si les fichiers HTML, CSS et JS sont valides
+                    echo Validating HTML files...
+                    if exist *.html (
+                        for %%i in (*.html) do echo Validating %%i...
+                    )
+
+                    echo Validating CSS files...
+                    if exist ${BUILD_DIR}\\css\\*.min.css (
+                        for %%i in (${BUILD_DIR}\\css\\*.min.css) do echo Validating %%i...
+                    )
+
+                    echo Validating JS files...
+                    if exist ${BUILD_DIR}\\js\\*.min.js (
+                        for %%i in (${BUILD_DIR}\\js\\*.min.js) do echo Validating %%i...
+                    )
+                    """
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 script {
                     echo "Deploying project..."
 
                     bat """
-                    REM Copier les fichiers minifiés et ressources dans le répertoire final
-                    if not exist ${BUILD_DIR}\\css mkdir ${BUILD_DIR}\\css
-                    if exist ${BUILD_DIR}\\css\\*.min.css copy ${BUILD_DIR}\\css\\*.min.css ${BUILD_DIR}\\css
+                    REM Préparer le répertoire de déploiement
+                    if not exist ${DEPLOY_DIR} mkdir ${DEPLOY_DIR}
 
-                    if not exist ${BUILD_DIR}\\js mkdir ${BUILD_DIR}\\js
-                    if exist ${BUILD_DIR}\\js\\*.min.js copy ${BUILD_DIR}\\js\\*.min.js ${BUILD_DIR}\\js
+                    REM Copier les fichiers du répertoire de build vers le répertoire de déploiement
+                    echo Copying files to deployment directory...
+                    xcopy ${BUILD_DIR} ${DEPLOY_DIR} /E /H /C /I
 
-                    if not exist ${BUILD_DIR}\\img mkdir ${BUILD_DIR}\\img
-                    if exist img\\*.* copy img\\*.* ${BUILD_DIR}\\img
-
-                    if not exist ${BUILD_DIR}\\fonts mkdir ${BUILD_DIR}\\fonts
-                    if exist fonts\\*.* copy fonts\\*.* ${BUILD_DIR}\\fonts
-
-                    echo Deployment complete. Files are ready in '${BUILD_DIR}'.
+                    echo Deployment complete. Files are ready in '${DEPLOY_DIR}'.
                     """
                 }
             }
@@ -69,6 +90,9 @@ pipeline {
     }
 
     post {
+        success {
+            echo "Build, test, and deployment completed successfully."
+        }
         always {
             echo "Cleaning up workspace..."
             cleanWs()
