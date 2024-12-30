@@ -2,7 +2,7 @@ pipeline {
     agent any  // Utilisation d'un agent générique pour exécuter le pipeline
 
     environment {
-        BUILD_DIR = "build"  // Répertoire où les fichiers peuvent être construits ou copiés
+        BUILD_DIR = "build"  // Répertoire où les fichiers seront construits ou copiés
     }
 
     stages {
@@ -16,16 +16,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Vous n'avez pas nécessairement besoin de build pour un projet statique.
-                    // Vous pouvez effectuer des actions ici, comme vérifier les fichiers ou exécuter des tests.
-
+                    // Vous pouvez ajouter des étapes spécifiques si vous avez des outils de build à exécuter
                     echo "Building project..."
-
-                    // Si vous avez des outils ou scripts spécifiques pour "compiler" ou traiter les fichiers,
-                    // vous pouvez les ajouter ici (par exemple, en utilisant Node.js si vous avez un fichier package.json).
-                    // Exemples :
-                    // bat 'npm install'   // Pour installer les dépendances si vous utilisez Node.js
-                    // bat 'npm run build' // Si vous avez un processus de build
                 }
             }
         }
@@ -33,20 +25,28 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Étape de déploiement du projet
                     echo "Deploying project..."
-
-                    // Par exemple, copiez les fichiers HTML, CSS, JS vers un répertoire de production
-                    // Vous pouvez utiliser 'bat' pour exécuter des commandes batch sous Windows
                     bat '''
-                    mkdir "%BUILD_DIR%"
-                    copy *.html "%BUILD_DIR%"
-                    copy *.css "%BUILD_DIR%"
-                    copy *.js "%BUILD_DIR%"
+                    mkdir "build"
+                    
+                    // Copier les fichiers HTML dans le répertoire 'build'
+                    copy *.html "build"
+                    
+                    // Copier les fichiers CSS depuis le dossier 'css' vers 'build'
+                    copy css\\*.css "build\\css"
+                    
+                    // Copier les fichiers JS depuis le dossier 'js' vers 'build'
+                    copy js\\*.js "build\\js"
+                    
+                    // Copier les fichiers images depuis le dossier 'img' vers 'build'
+                    copy img\\*.* "build\\img"
+                    
+                    // Copier les fichiers de fonts depuis le dossier 'fonts' vers 'build'
+                    copy fonts\\*.* "build\\fonts"
+                    
+                    // Copier les fichiers depuis le dossier 'slick' vers 'build'
+                    copy slick\\*.* "build\\slick"
                     '''
-
-                    // Vous pouvez aussi ajouter un déploiement à un serveur ou un autre système ici
-                    // Exemples : utiliser FTP, SFTP ou des outils de déploiement pour envoyer les fichiers
                 }
             }
         }
