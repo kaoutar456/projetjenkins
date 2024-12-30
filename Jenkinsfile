@@ -15,10 +15,11 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    // Vous pouvez ajouter des étapes spécifiques si vous avez des outils de build à exécuter
-                    echo "Building project..."
-                }
+                 script {
+            echo "Validating HTML files..."
+            bat 'npm install -g htmlhint'
+            bat 'htmlhint *.html'
+        }
             }
         }
 
