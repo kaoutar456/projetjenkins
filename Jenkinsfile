@@ -27,25 +27,26 @@ pipeline {
                 script {
                     echo "Deploying project..."
                     bat '''
-                  mkdir "build"
+                    REM Créer le répertoire "build" s'il n'existe pas
+                    if not exist "%BUILD_DIR%" mkdir "%BUILD_DIR%"
 
-REM Copier les fichiers HTML dans le répertoire 'build'
-copy *.html "build"
+                    REM Copier les fichiers HTML dans le répertoire 'build'
+                    copy *.html "%BUILD_DIR%"
 
-REM Copier les fichiers CSS depuis le dossier 'css' vers 'build'
-copy css\\*.css "build\\css"
+                    REM Copier les fichiers CSS depuis le dossier 'css' vers 'build'
+                    if exist "css\\*" copy css\\*.css "%BUILD_DIR%\\css"
 
-REM Copier les fichiers JS depuis le dossier 'js' vers 'build'
-copy js\\*.js "build\\js"
+                    REM Copier les fichiers JS depuis le dossier 'js' vers 'build'
+                    if exist "js\\*" copy js\\*.js "%BUILD_DIR%\\js"
 
-REM Copier les fichiers images depuis le dossier 'img' vers 'build'
-copy img\\*.* "build\\img"
+                    REM Copier les fichiers images depuis le dossier 'img' vers 'build'
+                    if exist "img\\*" copy img\\*.* "%BUILD_DIR%\\img"
 
-REM Copier les fichiers de fonts depuis le dossier 'fonts' vers 'build'
-copy fonts\\*.* "build\\fonts"
+                    REM Copier les fichiers de fonts depuis le dossier 'fonts' vers 'build'
+                    if exist "fonts\\*" copy fonts\\*.* "%BUILD_DIR%\\fonts"
 
-REM Copier les fichiers depuis le dossier 'slick' vers 'build'
-copy slick\\*.* "build\\slick"
+                    REM Copier les fichiers depuis le dossier 'slick' vers 'build'
+                    if exist "slick\\*" copy slick\\*.* "%BUILD_DIR%\\slick"
                     '''
                 }
             }
