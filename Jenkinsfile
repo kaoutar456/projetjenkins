@@ -40,9 +40,6 @@ pipeline {
                     echo Copying HTML files...
                     if exist *.html copy *.html ${BUILD_DIR}
                     """
-
-                    // Vérifier le contenu du répertoire de build pour le debug
-                    bat 'dir ${BUILD_DIR}'
                 }
             }
         }
@@ -101,8 +98,9 @@ pipeline {
             echo "Cleaning up workspace..."
             cleanWs()
 
-            // Archiver les artefacts de build
-            archiveArtifacts artifacts: 'build/**/*', allowEmptyArchive: true
+            // Archiver les artefacts de build pour les conserver
+            archiveArtifacts artifacts: '**/build/**/*', allowEmptyArchive: true
         }
     }
 }
+
